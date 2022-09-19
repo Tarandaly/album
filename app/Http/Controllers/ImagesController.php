@@ -23,6 +23,15 @@ class ImagesController extends Controller
     }
 
     public function store_images(Request $request, $album_id){
+        function generateRandomString($length = 10) {
+            $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            $charactersLength = strlen($characters);
+            $randomString = '';
+            for ($i = 0; $i < $length; $i++) {
+                $randomString .= $characters[rand(0, $charactersLength - 1)];
+            }
+            return $randomString;
+        }
         $user = Auth::user();
         $uid = $user->uid;
 
@@ -31,7 +40,7 @@ class ImagesController extends Controller
             'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
-        $imageName = time();
+        $imageName = generateRandomString(9);
         $ext = $request->image->extension();
         $request->image->move(public_path('usres/'.$uid.'/albums/'.$album->id), $imageName.'.'.$ext);
         
