@@ -55,13 +55,17 @@ class AlbumController extends Controller
     }
 
     public function delete_album_and_images($album_id){
+        $uid = Auth::user()->uid;
         $album = Auth::user()->albums->find($album_id);
+
+        File::deleteDirectory(public_path('usres/'.$uid.'/albums/'.$album->id));
 
         $images = Image::where('album_id',$album_id);
         $images->delete();
         $album->delete();
         return 'success!';
     }
+
     public function delete_album_and_transfer_images(Request $request, $album_id){
         $uid = Auth::user()->uid;
         $album = Auth::user()->albums->find($album_id);
@@ -79,8 +83,6 @@ class AlbumController extends Controller
          
             if (!file_exists($destinationPath)) {
                 File::move($sourcePath,$destinationPath);
-            }else{
-                echo 'dddsss';
             }
             $image->album_id = $request->another_album_id;
             $another_album->img_count += 1;
