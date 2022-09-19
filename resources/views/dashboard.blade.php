@@ -59,7 +59,7 @@
               href="javascript:;" data-img-height="" style="--img-height: 64%;"><img loading="lazy"
                 src="/img/orange-plus-icon-3.png" alt=""></a>
             <div class="service-case-body position-relative">
-              <h4 class="service-case-title mb-15">New Album</h4>
+              <h4 class="service-case-title mb-15">New Album 33</h4>
               <a class="service-case-arrow stretched-link" href="javascript:;"><svg
                   xmlns="http://www.w3.org/2000/svg" width="20" height="14" fill="none">
                   <path stroke="currentColor" stroke-width="1.7" d="M0 7h18m0 0-6.75-6M18 7l-6.75 6"></path>
