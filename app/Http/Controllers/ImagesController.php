@@ -59,6 +59,9 @@ class ImagesController extends Controller
             unlink($path);
         }
         $image->delete();
+
+        $album->img_count = $album->img_count - 1;
+        $album->save();
         return 'success!';  
 
     }

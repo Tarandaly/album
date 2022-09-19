@@ -59,7 +59,7 @@
               href="javascript:;" data-img-height="" style="--img-height: 64%;"><img loading="lazy"
                 src="/img/orange-plus-icon-3.png" alt=""></a>
             <div class="service-case-body position-relative">
-              <h4 class="service-case-title mb-15">New Album 33</h4>
+              <h4 class="service-case-title mb-15">New Album</h4>
               <a class="service-case-arrow stretched-link" href="javascript:;"><svg
                   xmlns="http://www.w3.org/2000/svg" width="20" height="14" fill="none">
                   <path stroke="currentColor" stroke-width="1.7" d="M0 7h18m0 0-6.75-6M18 7l-6.75 6"></path>
@@ -96,10 +96,11 @@
         </div>
       </div>
       <div class="modal-footer p-10 mx-auto">
-        <button type="button" class="btn btn-danger close ms-auto" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-warning close ms-auto" data-dismiss="modal">Cancel</button>
         <button type="button" class="btn btn-primary me-auto" id="update_album">Save changes</button>
         <hr class="w-100">
-        <button type="button" class="btn btn-primary mx-auto" id="create_new_album">Create</button>
+        <button type="button" class="btn btn-danger mx-auto" id="delete_album" data-bs-toggle="modal"
+        data-bs-target="#confirmDeleteAlbumModal">Delete Album</button>
       </div>
     </div>
   </div>
@@ -109,6 +110,33 @@
     <div class="modal-content">
       <div class="modal-header p-25">
         <h5 class="modal-title" id="newAlbumModalLabel">New Album</h5>
+        <button type="button" class="close btn p-1 fs-5" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body p-25">
+        <div class="container">
+          <div class="row">
+            <div class="col-12 col-md-10 mx-auto">
+              <input class="form-control new_album_name_input fs-5" type="text" placeholder="Album Name *" maxlength="50">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer p-10 mx-auto">
+        <button type="button" class="btn btn-danger close" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary" id="create_new_album">Create</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+{{-- confirm Delete Album Modal --}}
+<div class="modal fade" id="confirmDeleteAlbumModal" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteAlbumModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-header p-25">
+        <h5 class="modal-title" id="confirmDeleteAlbumModalLabel">New Album</h5>
         <button type="button" class="close btn p-1 fs-5" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
