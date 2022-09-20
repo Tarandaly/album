@@ -21,11 +21,11 @@ Route::get('/', function () {
 
 Route::get('/dashboard', [App\Http\Controllers\AlbumController::class, 'view_albums'])->middleware(['auth'])->name('dashboard');
 
+Route::get('/dashboard/{album_id}', [App\Http\Controllers\ImagesController::class, 'view_album_images']);
 Route::post('/dashboard/{album_id}', [App\Http\Controllers\AlbumController::class, 'set_album_data']);
+Route::post('/dashboard/{album_id}/store_images', [App\Http\Controllers\ImagesController::class, 'store_images']);
+Route::post('/dashboard/{album_id}/delete_image', [App\Http\Controllers\ImagesController::class, 'delete_image']);
+
 Route::post('/new_album', [App\Http\Controllers\AlbumController::class, 'new_album']);
 Route::post('/delete_album_and_images/{album_id}', [App\Http\Controllers\AlbumController::class, 'delete_album_and_images']);
 Route::post('/delete_album_and_transfer_images/{album_id}', [App\Http\Controllers\AlbumController::class, 'delete_album_and_transfer_images']);
-
-Route::get('/dashboard/{album_id}', [App\Http\Controllers\ImagesController::class, 'view_album_images']);
-Route::post('/dashboard/{album_id}/store_images', [App\Http\Controllers\ImagesController::class, 'store_images']);
-Route::post('/dashboard/{album_id}/delete_image', [App\Http\Controllers\ImagesController::class, 'delete_image']);

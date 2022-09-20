@@ -1,6 +1,6 @@
 @extends('layout.main')
 
-@section('title') Album @endsection
+@section('title') Album - Dashboard @endsection
 
 @section('css')
 <style>
@@ -75,10 +75,6 @@
     </div>
   </div>
 </div>
-
-{{-- <form method="post" action="upload.php" class="dropzone" enctype="multipart/form-data">
-  @csrf
-</form> --}}
 
 {{-- modals --}}
 <div class="modal fade" id="editAlbumModal" tabindex="-1" role="dialog" aria-labelledby="editAlbumModalLabel" aria-hidden="true">
@@ -298,7 +294,6 @@ $(document).ready(function(){
     })
 
     var modal = $(this)
-    // modal.find('.modal-title').text('Edit ' + album_name + ' Album')
   })
 })
 
