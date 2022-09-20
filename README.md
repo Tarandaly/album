@@ -2,7 +2,7 @@
 <br>
 <p>created with laravel 9 - And PHP 8</p>
 
-<h3>To install app and dependencies:<h3>
+<h3>To install app and dependencies:</h3>
 
 ```sh
 composer install
@@ -11,7 +11,7 @@ composer install
 <h3>Edit .env file</h3>
 <p>and set your database info</p>
 
-<h3>And generate key for app:<h3>
+<h3>And generate key for app:</h3>
 
 ```sh
 php artisan key:generate
@@ -23,7 +23,7 @@ php artisan key:generate
 php artisan migrate
 ```
 
-<h3>then run:<h3>
+<h3>then run:</h3>
 
 ```sh
 php artisan serve
