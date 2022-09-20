@@ -53,7 +53,10 @@ class ImagesController extends Controller
         ]);
 
         $album->save();
-        return response()->json(['success'=>$imageName.'.'.$ext]);
+        return response()->json([
+            'name'=>$imageName,
+            'ext'=>$ext,
+        ]);
     }
 
     public function delete_image(Request $request, $album_id){

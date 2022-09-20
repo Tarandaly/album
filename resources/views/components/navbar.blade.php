@@ -4,31 +4,39 @@
       <img src="/img/logo-placeholder.png" class="light" style="width: 165px;">
     </a>
     <a class="navbar-toggle order-4 popup-inline"
-      href="#navbar-mobile-style-1"><span></span><span></span><span></span></a>
+      href="#navbar-mobile-style-1"><span></span><span></span><span></span>
+    </a>
     <ul class="nav navbar-nav order-2 ms-auto nav-no-opacity">
-      
-      <li class="nav-item social_icon">
-        <a class="nav-link" href="/" target="_blank">
-          <svg xmlns="http://www.w3.org/2000/svg" width="7" height="14" fill="none">
-            <path fill="currentColor" d="M5.535 2.71h1.053V.748A12.741 12.741 0 0 0 5.055.66c-1.518 0-2.557 1.023-2.557 2.903v1.73H.823v2.195h1.675v5.525h2.053V7.488h1.607l.255-2.195H4.551V3.78c0-.635.159-1.07.984-1.07Z"></path>
-          </svg>
-        </a>
-      </li>
-      <li class="nav-item social_icon">
-        <a class="nav-link" href="/" target="_blank">
-          <svg xmlns="http://www.w3.org/2000/svg" width="15" height="12" fill="none">
-            <path fill="currentColor" d="M12.854 2.986c.009.124.009.248.009.373 0 3.793-2.887 8.163-8.164 8.163a8.108 8.108 0 0 1-4.406-1.288c.23.027.453.036.693.036a5.746 5.746 0 0 0 3.562-1.226 2.874 2.874 0 0 1-2.683-1.99 3.035 3.035 0 0 0 1.297-.053 2.87 2.87 0 0 1-2.3-2.816v-.036a2.89 2.89 0 0 0 1.296.365A2.867 2.867 0 0 1 .88 2.124c0-.533.142-1.022.391-1.448a8.156 8.156 0 0 0 5.916 3.002 3.239 3.239 0 0 1-.07-.657c0-1.581 1.278-2.87 2.869-2.87.826 0 1.572.347 2.096.907a5.65 5.65 0 0 0 1.821-.693 2.862 2.862 0 0 1-1.261 1.581 5.751 5.751 0 0 0 1.652-.444 6.169 6.169 0 0 1-1.44 1.484Z"></path>
-          </svg>
-        </a>
-      </li>
-      <li class="nav-item social_icon">
-        <a class="nav-link" href="/" target="_blank">
-          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="13" fill="none">
-            <path fill="currentColor" d="M7.004 3.692c-1.754 0-3.169 1.403-3.169 3.142 0 1.74 1.415 3.142 3.169 3.142 1.753 0 3.168-1.403 3.168-3.142 0-1.739-1.415-3.142-3.168-3.142Zm0 5.185a2.055 2.055 0 0 1-2.06-2.043c0-1.126.924-2.042 2.06-2.042 1.136 0 2.06.916 2.06 2.042a2.055 2.055 0 0 1-2.06 2.043Zm4.036-5.313c0 .407-.33.733-.739.733a.734.734 0 0 1-.739-.733c0-.405.331-.733.74-.733.407 0 .738.328.738.733Zm2.099.744c-.047-.982-.273-1.852-.998-2.568-.723-.716-1.6-.94-2.59-.99-1.02-.057-4.078-.057-5.098 0-.987.047-1.864.27-2.59.987-.724.717-.948 1.586-.997 2.568-.058 1.011-.058 4.044 0 5.056.047.981.273 1.85.998 2.567.725.717 1.6.94 2.589.99 1.02.058 4.078.058 5.098 0 .99-.046 1.867-.27 2.59-.99.722-.716.948-1.586.998-2.567.058-1.012.058-4.042 0-5.053Zm-1.318 6.138a2.077 2.077 0 0 1-1.175 1.165c-.813.32-2.744.246-3.642.246-.9 0-2.832.071-3.643-.246a2.076 2.076 0 0 1-1.175-1.165c-.322-.806-.248-2.72-.248-3.612 0-.891-.071-2.808.248-3.612a2.077 2.077 0 0 1 1.175-1.165c.814-.32 2.744-.246 3.643-.246.898 0 2.831-.071 3.642.246.54.213.957.626 1.175 1.165.322.807.248 2.72.248 3.612 0 .891.074 2.808-.248 3.612Z"></path>
-          </svg>
-        </a>
-      </li>
-
+      @if (Route::has('login'))
+        @auth
+          <li class="nav-item">
+            <form method="POST" action="{{ route('logout') }}" class="d-none">
+              @csrf
+            </form>
+            <a class="nav-link" href="{{ route('logout') }}" onclick="event.preventDefault();this.previousElementSibling.submit();">
+              <span>{{ __('Log Out') }}</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url('/dashboard') }}">
+              <span>Dashboard</span>
+            </a>
+          </li>
+        @else
+          <li class="nav-item">
+            <a class="nav-link" href="{{ route('login') }}">
+              <span>Log in</span>
+            </a>
+          </li>
+          @if (Route::has('register'))
+            <li class="nav-item">
+              <a class="nav-link" href="{{ route('register') }}">
+                <span>Sign up</span>
+              </a>
+            </li>
+          @endif
+        @endauth
+      @endif
     </ul>
     <a
       class="btn d-none d-sm-inline-flex btn btn-sm btn-accent-1 ms-auto ms-lg-60 me-30 me-lg-0 order-2 order-lg-3"
