@@ -46,8 +46,6 @@ class AlbumController extends Controller
         
         $album = Auth::user()->albums->find($album_id);
 
-        // if(!$album)abort(404);
-
         $album->name = $request->album_name;
 
         $album->save();
