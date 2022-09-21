@@ -41,7 +41,7 @@ class ImagesController extends Controller
 
         $imageName = generateRandomString(9);
         $ext = $request->image->extension();
-        $request->image->move(public_path('usres/'.$uid.'/albums/'.$album->id), $imageName.'.'.$ext);
+        $request->image->move(public_path('users/'.$uid.'/albums/'.$album->id), $imageName.'.'.$ext);
         
         $album->img_count = $album->img_count + 1;
 
@@ -58,6 +58,28 @@ class ImagesController extends Controller
         ]);
     }
 
+    public function update_image(Request $request, $album_id, $img_name, $img_ext){
+        $user = Auth::user();
+        $uid = $user->uid;
+        $album = $user->albums->find($album_id);
+
+        $image = $album->images->where('name',$img_name)->firstOrFail();
+        $old_name = $image->name;
+        $path = public_path('users/'.$uid.'/albums/'.$album->id . '/' . $image->name.'.'.$image->ext);
+        if (file_exists($path)) {
+            rename($path, public_path('users/'.$uid.'/albums/'.$album->id . '/' . $request->new_img_name.'.'.$image->ext));
+        }
+
+        $image->name = $request->new_img_name;
+        $image->save();
+
+        return response()->json([
+            'old_name' => $old_name,
+            'new_name' => $request->new_img_name,
+            'ext' => $image->ext,
+        ]);
+    }
+
     public function delete_image(Request $request, $album_id){
         $user = Auth::user();
         $uid = $user->uid;
@@ -65,7 +87,7 @@ class ImagesController extends Controller
 
         $image = $album->images->where('name',$request->img_name)->firstOrFail();
 
-        $path = public_path('usres/'.$uid.'/albums/'.$album->id . '/' . $image->name.'.'.$image->ext);
+        $path = public_path('users/'.$uid.'/albums/'.$album->id . '/' . $image->name.'.'.$image->ext);
         if (file_exists($path)) {
             unlink($path);
         }

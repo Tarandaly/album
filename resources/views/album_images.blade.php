@@ -46,13 +46,21 @@
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header p-25">
-        <h5 class="modal-title" id="showImageModalLabel">New Album</h5>
+        <h5 class="modal-title" id="showImageModalLabel">Show Image</h5>
         <button type="button" class="close btn p-1 fs-5" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body p-25">
         <div class="container">
+          <div class="row mb-10">
+            <div class="col-7 col-sm-4 text-end d-flex d-sm-block">
+              <label for="#image_name">Image Name: </label>
+            </div>
+            <div class="col-12 col-sm-8">
+              <input class="form-control" type="text" placeholder="Set Name *" id="image_name">
+            </div>
+          </div>
           <div class="row">
             <div class="col-12 text-center">
               <img src="/img/album.png" class="show_image mw-100">
@@ -61,6 +69,7 @@
         </div>
       </div>
       <div class="modal-footer p-10 mx-auto">
+        <button type="button" class="btn btn-success close" data-dismiss="modal" id="save_img_changes">Save Changes</button>
         <button type="button" class="btn btn-danger close" data-dismiss="modal">Close</button>
       </div>
     </div>
@@ -75,7 +84,7 @@ Dropzone.autoDiscover = false;
 
 $(document).ready(function(){
   var img_info_array = {};
-  var new_img_info_array = [];
+  var selected_img_name,selected_img_ext;
   var myDropzone = new Dropzone("#upload-widget", {
     maxFilesize: 12,
     url: "/dashboard/{{$album->id}}/store_images",
@@ -91,7 +100,6 @@ $(document).ready(function(){
     timeout: 5000,
     removedfile: function(file) {
       var name = file.name;
-      // return console.log(file)
       $.ajax({
         type: 'POST',
         url: '{{ url("dashboard/".$album->id."/delete_image") }}',
@@ -111,43 +119,61 @@ $(document).ready(function(){
     },
     success: function(file, response) 
     {
-        console.log(response);
-        console.log(file);
-        //response.success
+      img_info_array[response.name] = response.ext
 
-        img_info_array[response.name] = response.ext
+      console.log(img_info_array)
 
-        console.log(img_info_array)
+      $(file.previewElement).find('.dz-image img').attr('alt',response.name)
+      $(file.previewElement).find('[data-dz-name]').text(response.name)
 
-        $(file.previewElement).children('.dz-image').children('img').attr('alt',response.name)
-        $(file.previewElement).children('[data-dz-name]').text(response.name)
-
-        $(".dz-preview").off('click')
-        $(".dz-preview").on('click',function(){
-          $(".show_image").attr('src', '/usres/{{$uid}}/albums/{{$album->id}}/' + $(this).children('.dz-image').children('img').attr('alt') + '.' + img_info_array[$(this).children('.dz-image').children('img').attr('alt')])
-          $("#showImageModal").modal('show')
-        })
-        
+      
+      set_images_set()
     },
     error: function(file, response)
     {
-        return false;
+      return false;
     }
   });
 
   @foreach ($images as $image)
-  var mockFile = { name: "{{$image->name}}", size: {{ filesize(file_exists(public_path('usres/'.$uid.'/albums/'.$album->id.'/'.$image->name.'.'.$image->ext))?public_path('usres/'.$uid.'/albums/'.$album->id.'/'.$image->name.'.'.$image->ext):null) + 0 }} };
-  myDropzone.displayExistingFile(mockFile, "/usres/{{$uid}}/albums/{{$album->id.'/'.$image->name.'.'.$image->ext}}",null,null,true);
+  var mockFile = { name: "{{$image->name}}", size: {{ filesize(file_exists(public_path('users/'.$uid.'/albums/'.$album->id.'/'.$image->name.'.'.$image->ext))?public_path('users/'.$uid.'/albums/'.$album->id.'/'.$image->name.'.'.$image->ext):null) + 0 }} };
+  myDropzone.displayExistingFile(mockFile, "/users/{{$uid}}/albums/{{$album->id.'/'.$image->name.'.'.$image->ext}}",null,null,true);
   img_info_array['{{$image->name}}'] = '{{$image->ext}}'
   
   @endforeach
-  console.log(img_info_array)
 
-  $(".dz-preview").on('click',function(){
-    $(".show_image").attr('src', '/usres/{{$uid}}/albums/{{$album->id}}/' + $(this).children('.dz-image').children('img').attr('alt') + '.' + img_info_array[$(this).children('.dz-image').children('img').attr('alt')])
-    $("#showImageModal").modal('show')
+  function set_images_set(){
+    $(".dz-preview").off('click')
+    $(".dz-preview").on('click',function(){
+      selected_img_name = $(this).find('.dz-image img').attr('alt');
+      selected_img_ext = img_info_array[$(this).find('.dz-image img').attr('alt')]
+
+      $(".show_image").attr('src', '/users/{{$uid}}/albums/{{$album->id}}/' + selected_img_name + '.' + selected_img_ext)
+      $("#showImageModalLabel").text(selected_img_name + '.' + selected_img_ext)
+      $("#showImageModal #image_name").val(selected_img_name)
+      $("#showImageModal").modal('show')
+    })
+  }
+  set_images_set()
+
+  $("#save_img_changes").click(function(){
+    $.ajax({
+      url: '/dashboard/{{$album->id}}/update_image/'+selected_img_name+'/'+selected_img_ext,
+      type: 'post',
+      data: {
+        new_img_name: $("#showImageModal #image_name").val(),
+      },
+      success: data=>{
+        var elem = $('[alt='+data.old_name+']').parents('.dz-preview.dz-image-preview')
+        img_info_array[data.new_name] = data.ext
+        delete img_info_array[data.old_name];
+        elem.find('.dz-image img').attr('alt',data.new_name)
+        elem.find('[data-dz-name]').text(data.new_name)
+      }
+    });
   })
 })
+
 
 
 </script>

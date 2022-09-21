@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-top navbar-fixed navbar-opaque" color-on-scroll="10">
+<nav class="navbar navbar-expand-lg navbar-top navbar-fixed navbar-opaque navbar-border-bottom" color-on-scroll="10">
   <div class="container">
     <a class="navbar-brand" href="/">
       <img src="/img/logo-placeholder.png" class="light" style="width: 165px;">

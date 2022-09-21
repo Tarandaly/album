@@ -244,7 +244,7 @@ $(document).ready(function(){
 
 
     }else{
-      $(".delete_album_msg").text('Are you sure you want to clear this Album!');
+      $(".delete_album_msg").text('Are you sure you want to delete this Album!');
       $("#delete_album_and_images,#delete_album_and_transfer_images").hide()
       $("#delete_album").show()
     }
