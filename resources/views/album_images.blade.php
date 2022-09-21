@@ -158,7 +158,7 @@ $(document).ready(function(){
 
   $("#save_img_changes").click(function(){
     $.ajax({
-      url: '/dashboard/{{$album->id}}/update_image/'+selected_img_name+'/'+selected_img_ext,
+      url: '/dashboard/{{$album->id}}/update_image/'+selected_img_name,
       type: 'post',
       data: {
         new_img_name: $("#showImageModal #image_name").val(),

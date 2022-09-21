@@ -1,6 +1,6 @@
-<p>Album Project</p>
+<h1>Album Project</h1>
 <br>
-<p>created with laravel 9 - And PHP 8</p>
+<h2>created with laravel 9 - And PHP 8</h2>
 
 <h3>To install app and dependencies:</h3>
 

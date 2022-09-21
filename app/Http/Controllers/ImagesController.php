@@ -58,13 +58,14 @@ class ImagesController extends Controller
         ]);
     }
 
-    public function update_image(Request $request, $album_id, $img_name, $img_ext){
+    public function update_image(Request $request, $album_id, $img_name){
         $user = Auth::user();
         $uid = $user->uid;
         $album = $user->albums->find($album_id);
 
         $image = $album->images->where('name',$img_name)->firstOrFail();
         $old_name = $image->name;
+
         $path = public_path('users/'.$uid.'/albums/'.$album->id . '/' . $image->name.'.'.$image->ext);
         if (file_exists($path)) {
             rename($path, public_path('users/'.$uid.'/albums/'.$album->id . '/' . $request->new_img_name.'.'.$image->ext));

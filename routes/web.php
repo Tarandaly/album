@@ -24,7 +24,7 @@ Route::get('/dashboard', [App\Http\Controllers\AlbumController::class, 'view_alb
 Route::get('/dashboard/{album_id}', [App\Http\Controllers\ImagesController::class, 'view_album_images']);
 Route::post('/dashboard/{album_id}', [App\Http\Controllers\AlbumController::class, 'set_album_data']);
 Route::post('/dashboard/{album_id}/store_images', [App\Http\Controllers\ImagesController::class, 'store_images']);
-Route::post('/dashboard/{album_id}/update_image/{img_name}/{img_ext}', [App\Http\Controllers\ImagesController::class, 'update_image']);
+Route::post('/dashboard/{album_id}/update_image/{img_name}', [App\Http\Controllers\ImagesController::class, 'update_image']);
 Route::post('/dashboard/{album_id}/delete_image', [App\Http\Controllers\ImagesController::class, 'delete_image']);
 
 Route::post('/new_album', [App\Http\Controllers\AlbumController::class, 'new_album']);
