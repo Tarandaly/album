@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('ext', 10);
             $table->string('token')->unique();
             $table->bigInteger('album_id');
-            $table->tinyInteger('is_public',1);
+            $table->tinyInteger('is_public');
             $table->timestamps();
         });
     }

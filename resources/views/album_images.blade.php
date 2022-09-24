@@ -184,7 +184,7 @@ $(document).ready(function(){
       $("#showImageModalLabel").text(selected_img_name + '.' + selected_img_ext)
       $("#showImageModal #image_name").val(selected_img_name)
       $("#showImageModal #image_link").val('/public-albums/{{$album->id}}/file/' + selected_img_name + '.' + selected_img_ext + '?token=' + selected_img_token)
-      console.log(parseInt(selected_img_is_public))
+      
       $("#showImageModal #image_is_public").prop("checked", parseInt(selected_img_is_public))
       $("#showImageModal").modal('show')
     })
@@ -206,7 +206,6 @@ $(document).ready(function(){
         img_info_array[data.new_name].ext = data.ext
         img_info_array[data.new_name].token = data.token
         img_info_array[data.new_name].is_public = data.is_public
-        console.log(img_info_array)
         elem.find('.dz-image img').attr('alt',data.new_name)
         elem.find('[data-dz-name]').text(data.new_name)
 
