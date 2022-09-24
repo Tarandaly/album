@@ -2,8 +2,8 @@
   <div class="container">
       <div class="row gy-50">
           <div class="col-12 text-center">
-            <a class="d-block mb-30" href="/">
-              <img src="/img/logo-placeholder.png" class="light" style="width: 165px;">
+            <a class="d-inline-block mb-30" href="/">
+              <img src="/img/logo-placeholder.png" class="light" style="width: 250px;">
             </a>
               <p class="font-size-15 mb-35">Thanks for Visiting</p>
               <ul class="nav text-white align-items-center mb-20 nav-gap-md nav-no-opacity col-12 col-md-3 mx-auto" style="justify-content: space-evenly">

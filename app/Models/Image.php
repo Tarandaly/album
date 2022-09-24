@@ -9,5 +9,5 @@ class Image extends Model
 {
     use HasFactory;
 
-    protected $fillable=["name","album_id","ext"];
+    protected $fillable=["name","album_id","ext","token","is_public"];
 }

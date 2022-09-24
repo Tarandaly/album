@@ -12,6 +12,7 @@
   <link rel="icon" type="image/png" href="/img/favicon.png">
   <link rel="stylesheet" href="/css/magnific-popup.css">
   <link rel="stylesheet" href="/css/dropzone.min.css">
+  <link rel="stylesheet" href="/css/jquery.toast.min.css">
   <link rel="stylesheet" href="/css/main.css">
   @yield('css')
 </head>
@@ -25,6 +26,7 @@
   
   <script src="/js/jquery.min.js"></script>
   <script src="/js/bootstrap.js"></script>
+  <script src="/js/jquery.toast.min.js"></script>
   <script src="/js/imagesloaded.pkgd.js"></script>
   <script src="/js/jquery.magnific-popup.js"></script>
   <script src="/js/jquery.inview.js"></script>

@@ -56,7 +56,7 @@ class AlbumController extends Controller
         $uid = Auth::user()->uid;
         $album = Auth::user()->albums->find($album_id);
 
-        File::deleteDirectory(public_path('users/'.$uid.'/albums/'.$album->id));
+        File::deleteDirectory(storage_path('app/users/'.$uid.'/albums/'.$album->id));
 
         $images = Image::where('album_id',$album_id);
         $images->delete();
@@ -76,8 +76,8 @@ class AlbumController extends Controller
         }
 
         foreach($images as $image){
-            $sourcePath = public_path('users/'.$uid.'/albums/'.$album->id . '/' . $image->name.'.'.$image->ext);
-            $destinationPath = public_path('users/'.$uid.'/albums/'.$request->another_album_id . '/' . $image->name.'.'.$image->ext);
+            $sourcePath = storage_path('app/users/'.$uid.'/albums/'.$album->id . '/' . $image->name.'.'.$image->ext);
+            $destinationPath = storage_path('app/users/'.$uid.'/albums/'.$request->another_album_id . '/' . $image->name.'.'.$image->ext);
          
             if (!file_exists($destinationPath)) {
                 File::move($sourcePath,$destinationPath);
@@ -88,7 +88,7 @@ class AlbumController extends Controller
             $another_album->save();
         }
 
-        File::deleteDirectory(public_path('users/'.$uid.'/albums/'.$album->id));
+        File::deleteDirectory(storage_path('app/users/'.$uid.'/albums/'.$album->id));
 
         $album->delete();
 

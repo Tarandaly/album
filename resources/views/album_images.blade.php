@@ -10,6 +10,10 @@
   .card_btn_c:hover{
     box-shadow: 0px 1px 8px #000;
   }
+  #play_area{
+    position: fixed;
+    bottom: -1000px;
+  }
 </style>
 @endsection
 @section('page')
@@ -54,11 +58,33 @@
       <div class="modal-body p-25">
         <div class="container">
           <div class="row mb-10">
-            <div class="col-7 col-sm-4 text-end d-flex d-sm-block">
+            <div class="col-12 col-sm-4 text-end d-flex d-sm-block">
               <label for="#image_name">Image Name: </label>
             </div>
             <div class="col-12 col-sm-8">
-              <input class="form-control" type="text" placeholder="Set Name *" id="image_name">
+              <input class="form-control py-5" type="text" placeholder="Set Name *" id="image_name">
+            </div>
+          </div>
+          <div class="row mb-10">
+            <div class="col-12 col-sm-4 text-end d-flex d-sm-block">
+              <label for="#image_link">Image Public Link: </label>
+            </div>
+            <div class="col-12 col-sm-8">
+              <input class="form-control py-5" type="text" placeholder="Link" disabled id="image_link">
+              <div class="text-center">
+
+                <div id="play_area"><input type="text"/></div>
+                <button class="btn btn-sm btn-success" id="copy_img_link" type="button">Copy Link</button>
+                <button class="btn btn-sm btn-warning" id="reset_img_token">Reset token</button>
+              </div>
+            </div>
+          </div>
+          <div class="row mb-10">
+            <div class="col-8 col-sm-4 text-end d-flex d-sm-block">
+              <label for="#image_is_public">Image Is Public: </label>
+            </div>
+            <div class="col-2 col-sm-8">
+              <input class="form-check-input" type="checkbox" id="image_is_public">
             </div>
           </div>
           <div class="row">
@@ -84,7 +110,7 @@ Dropzone.autoDiscover = false;
 
 $(document).ready(function(){
   var img_info_array = {};
-  var selected_img_name,selected_img_ext;
+  var selected_img_name,selected_img_ext,selected_img_token,selected_img_is_public;
   var myDropzone = new Dropzone("#upload-widget", {
     maxFilesize: 12,
     url: "/dashboard/{{$album->id}}/store_images",
@@ -119,9 +145,10 @@ $(document).ready(function(){
     },
     success: function(file, response) 
     {
-      img_info_array[response.name] = response.ext
-
-      console.log(img_info_array)
+      img_info_array[response.name] = {}
+      img_info_array[response.name].ext = response.ext
+      img_info_array[response.name].token = response.token
+      img_info_array[response.name].is_public = response.is_public
 
       $(file.previewElement).find('.dz-image img').attr('alt',response.name)
       $(file.previewElement).find('[data-dz-name]').text(response.name)
@@ -136,9 +163,12 @@ $(document).ready(function(){
   });
 
   @foreach ($images as $image)
-  var mockFile = { name: "{{$image->name}}", size: {{ filesize(file_exists(public_path('users/'.$uid.'/albums/'.$album->id.'/'.$image->name.'.'.$image->ext))?public_path('users/'.$uid.'/albums/'.$album->id.'/'.$image->name.'.'.$image->ext):null) + 0 }} };
+  var mockFile = { name: "{{$image->name}}", size: {{ filesize(file_exists(storage_path('app/users/'.$uid.'/albums/'.$album->id.'/'.$image->name.'.'.$image->ext))?storage_path('app/users/'.$uid.'/albums/'.$album->id.'/'.$image->name.'.'.$image->ext):null) + 0 }} };
   myDropzone.displayExistingFile(mockFile, "/users/{{$uid}}/albums/{{$album->id.'/'.$image->name.'.'.$image->ext}}",null,null,true);
-  img_info_array['{{$image->name}}'] = '{{$image->ext}}'
+  img_info_array['{{$image->name}}'] = {}
+  img_info_array['{{$image->name}}'].ext = '{{$image->ext}}'
+  img_info_array['{{$image->name}}'].token = '{{$image->token}}'
+  img_info_array['{{$image->name}}'].is_public = '{{$image->is_public}}'
   
   @endforeach
 
@@ -146,11 +176,16 @@ $(document).ready(function(){
     $(".dz-preview").off('click')
     $(".dz-preview").on('click',function(){
       selected_img_name = $(this).find('.dz-image img').attr('alt');
-      selected_img_ext = img_info_array[$(this).find('.dz-image img').attr('alt')]
+      selected_img_ext = img_info_array[selected_img_name].ext
+      selected_img_token = img_info_array[selected_img_name].token
+      selected_img_is_public = img_info_array[selected_img_name].is_public
 
       $(".show_image").attr('src', '/users/{{$uid}}/albums/{{$album->id}}/' + selected_img_name + '.' + selected_img_ext)
       $("#showImageModalLabel").text(selected_img_name + '.' + selected_img_ext)
       $("#showImageModal #image_name").val(selected_img_name)
+      $("#showImageModal #image_link").val('/public-albums/{{$album->id}}/file/' + selected_img_name + '.' + selected_img_ext + '?token=' + selected_img_token)
+      console.log(parseInt(selected_img_is_public))
+      $("#showImageModal #image_is_public").prop("checked", parseInt(selected_img_is_public))
       $("#showImageModal").modal('show')
     })
   }
@@ -162,17 +197,50 @@ $(document).ready(function(){
       type: 'post',
       data: {
         new_img_name: $("#showImageModal #image_name").val(),
+        is_public: ($("input#image_is_public:checked").val() ? 1 : 0),
       },
       success: data=>{
         var elem = $('[alt='+data.old_name+']').parents('.dz-preview.dz-image-preview')
-        img_info_array[data.new_name] = data.ext
         delete img_info_array[data.old_name];
+        img_info_array[data.new_name] = {}
+        img_info_array[data.new_name].ext = data.ext
+        img_info_array[data.new_name].token = data.token
+        img_info_array[data.new_name].is_public = data.is_public
         elem.find('.dz-image img').attr('alt',data.new_name)
         elem.find('[data-dz-name]').text(data.new_name)
       }
     });
   })
+  $("#copy_img_link").click(function(){
+    $('#play_area>input').val(window.location.origin+$('#image_link').val())
+    $('#play_area>input').select()
+    document.execCommand('copy')
+    $.toast({
+      heading: 'Copied.',
+      icon: 'success'
+    })
+  })
+
+  $("#reset_img_token").click(function(){
+    $.ajax({
+      url: '/dashboard/{{$album->id}}/update_image/'+ selected_img_name,
+      type: 'post',
+      data: {
+        _method: 'put'
+      },
+      success: data=>{
+        img_info_array[selected_img_name].token = data.token
+        $("#showImageModal #image_link").val('/public-albums/{{$album->id}}/file/' + selected_img_name + '.' + selected_img_ext + '?token=' + data.token)
+        $.toast({
+          heading: 'Image Token Changed.',
+          icon: 'success'
+        })
+      }
+    });
+  });
 })
+
+
 
 
 

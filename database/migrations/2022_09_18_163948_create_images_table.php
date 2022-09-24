@@ -15,9 +15,11 @@ return new class extends Migration
     {
         Schema::create('images', function (Blueprint $table) {
             $table->id();
-            $table->string('name', 50);
+            $table->string('name');
             $table->string('ext', 10);
+            $table->string('token')->unique();
             $table->bigInteger('album_id');
+            $table->tinyInteger('is_public',1);
             $table->timestamps();
         });
     }
