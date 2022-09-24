@@ -45,6 +45,7 @@ class AlbumController extends Controller
         $user = Auth::user();
         
         $album = Auth::user()->albums->find($album_id);
+        if(!$album)abort(404);
 
         $album->name = $request->album_name;
 
@@ -55,6 +56,7 @@ class AlbumController extends Controller
     public function delete_album_and_images($album_id){
         $uid = Auth::user()->uid;
         $album = Auth::user()->albums->find($album_id);
+        if(!$album)abort(404);
 
         File::deleteDirectory(storage_path('app/users/'.$uid.'/albums/'.$album->id));
 
@@ -68,6 +70,7 @@ class AlbumController extends Controller
         $uid = Auth::user()->uid;
         $album = Auth::user()->albums->find($album_id);
         $another_album = Auth::user()->albums->find($request->another_album_id);
+        if(!$album || !$another_album)abort(404);
 
         $images = Image::where('album_id',$album_id)->orderby('id', 'desc')->paginate(999);
 
