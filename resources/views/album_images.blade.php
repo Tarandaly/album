@@ -200,14 +200,20 @@ $(document).ready(function(){
         is_public: ($("input#image_is_public:checked").val() ? 1 : 0),
       },
       success: data=>{
-        var elem = $('[alt='+data.old_name+']').parents('.dz-preview.dz-image-preview')
+        var elem = $('[alt="'+data.old_name+'"]').parents('.dz-preview.dz-image-preview')
         delete img_info_array[data.old_name];
         img_info_array[data.new_name] = {}
         img_info_array[data.new_name].ext = data.ext
         img_info_array[data.new_name].token = data.token
         img_info_array[data.new_name].is_public = data.is_public
+        console.log(img_info_array)
         elem.find('.dz-image img').attr('alt',data.new_name)
         elem.find('[data-dz-name]').text(data.new_name)
+
+        $.toast({
+          heading: 'Saved successfully.',
+          icon: 'success'
+        })
       }
     });
   })
@@ -234,6 +240,12 @@ $(document).ready(function(){
         $.toast({
           heading: 'Image Token Changed.',
           icon: 'success'
+        })
+      },
+      error: data=>{
+        $.toast({
+          heading: 'Something went wrong!',
+          icon: 'error'
         })
       }
     });
