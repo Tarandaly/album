@@ -18,6 +18,8 @@ class ImagesController extends Controller
         $user = Auth::user();
         $uid = $user->uid;
         $album = Auth::user()->albums->find($album_id);
+        if(!$album)abort(404);
+
         $images = $album->images;
 
         return view('album_images', compact('album','images','uid'));
@@ -28,6 +30,8 @@ class ImagesController extends Controller
         $uid = $user->uid;
 
         $album = Auth::user()->albums->find($album_id);
+        if(!$album)abort(404);
+
         $request->validate([
             'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
@@ -59,6 +63,7 @@ class ImagesController extends Controller
         $user = Auth::user();
         $uid = $user->uid;
         $album = $user->albums->find($album_id);
+        if(!$album)abort(404);
 
         $image = $album->images->where('name',$img_name)->firstOrFail();
         $old_name = $image->name;
@@ -97,6 +102,7 @@ class ImagesController extends Controller
         $user = Auth::user();
         $uid = $user->uid;
         $album = $user->albums->find($album_id);
+        if(!$album)abort(404);
 
         $image = $album->images->where('name',$img_name)->firstOrFail();
         $token = keyGenerator::key(21);
@@ -113,6 +119,7 @@ class ImagesController extends Controller
         $user = Auth::user();
         $uid = $user->uid;
         $album = $user->albums->find($album_id);
+        if(!$album)abort(404);
 
         $image = $album->images->where('name',$request->img_name)->firstOrFail();
 
