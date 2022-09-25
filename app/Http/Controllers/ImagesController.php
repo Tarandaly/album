@@ -102,7 +102,6 @@ class ImagesController extends Controller
 
     public function reset_img_token($album_id, $img_name){
         $user = Auth::user();
-        $uid = $user->uid;
         $album = $user->albums->find($album_id);
         if(!$album)abort(404);
 
