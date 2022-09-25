@@ -296,53 +296,5 @@ $(document).ready(function(){
     var modal = $(this)
   })
 })
-
-Dropzone.options.dropzone = {
-  maxFilesize: 12,
-  paramName: "image",
-  renameFile: function(file) {
-      var dt = new Date();
-      var time = dt.getTime();
-      return time+file.name;
-  },
-  acceptedFiles: ".jpeg,.jpg,.png,.gif",
-  addRemoveLinks: true,
-  timeout: 5000,
-  maxFiles:1,
-  init: function() {
-    this.on('addedfile', function(file) {
-      if (this.files.length > 1) {
-        this.removeFile(this.files[0]);
-      }
-    });
-  },
-  removedfile: function(file) {
-    var name = file.upload.filename;
-    $.ajax({
-      type: 'POST',
-      url: '{{ url("image/delete") }}',
-      data: {
-        filename: name
-      },
-      success: function (data){
-        console.log("File has been successfully removed!!");
-      },
-      error: function(e) {
-        console.log(e);
-      }
-    });
-    var fileRef;
-    return (fileRef = file.previewElement) != null ? 
-    fileRef.parentNode.removeChild(file.previewElement) : void 0;
-  },
-  success: function(file, response) 
-  {
-      console.log(response);
-  },
-  error: function(file, response)
-  {
-      return false;
-  }
-};
 </script>
 @endsection

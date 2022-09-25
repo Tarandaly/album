@@ -74,8 +74,8 @@ class AlbumController extends Controller
 
         $images = Image::where('album_id',$album_id)->orderby('id', 'desc')->paginate(999);
 
-        if (!file_exists('users/'.$uid.'/albums/'.$request->another_album_id)) {
-            File::makeDirectory('users/'.$uid.'/albums/'.$request->another_album_id, $mode = 0777, true, true);
+        if (!file_exists(storage_path('app/users/'.$uid.'/albums/'.$request->another_album_id))) {
+            File::makeDirectory(storage_path('app/users/'.$uid.'/albums/'.$request->another_album_id), $mode = 0777, true, true);
         }
 
         foreach($images as $image){
