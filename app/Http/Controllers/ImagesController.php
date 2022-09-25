@@ -89,6 +89,8 @@ class ImagesController extends Controller
     public function get_private_image($user_uid, $album_id, $file_name){
         $user = Auth::user();
         $uid = $user->uid;
+
+        if($uid != $user_uid)abort(404);
         
         $path = 'users/'.$uid.'/albums/'.$album_id . '/' . $file_name;
         if(Storage::exists($path)){
