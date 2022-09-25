@@ -33,4 +33,4 @@ Route::post('/delete_album_and_images/{album_id}', [App\Http\Controllers\AlbumCo
 Route::post('/delete_album_and_transfer_images/{album_id}', [App\Http\Controllers\AlbumController::class, 'delete_album_and_transfer_images']);
 
 Route::get('/users/{user_uid}/albums/{album_id}/{file_name}', [App\Http\Controllers\ImagesController::class, 'get_private_image']);
-Route::get('/public-albums/{album_id}/file/{file_name}.{file_ext}', [App\Http\Controllers\PublicController::class, 'get_public_image']);
+Route::get('/public-albums/{album_id}/file/{file_name}', [App\Http\Controllers\PublicController::class, 'get_public_image']);

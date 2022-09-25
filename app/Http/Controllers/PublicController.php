@@ -10,9 +10,11 @@ use Illuminate\Support\Facades\Storage;
 
 class PublicController extends Controller
 {
-  public function get_public_image(Request $request, $album_id, $file_name, $file_ext){
+  public function get_public_image(Request $request, $album_id, $file_name){
     $album = Album::findOrFail($album_id);
-    $image = Image::where('name',$file_name)
+    $file_ext = pathinfo($file_name)['extension'];
+    $image_name = pathinfo($file_name)['filename'];
+    $image = Image::where('name',$image_name)
       ->where('ext',$file_ext)
       ->where('token',$request->token)
       ->where('is_public',1)
